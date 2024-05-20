@@ -26,6 +26,10 @@ GLMmodel * lowerB = NULL;
 GLMmodel * upperB = NULL;
 GLMmodel * lowerA = NULL;
 GLMmodel * body=NULL;
+GLMmodel * leftshouder=NULL;
+GLMmodel * rightshouder=NULL;
+GLMmodel * head=NULL;
+GLMmodel * righthend=NULL;
 void drawBody(void)
 {
     if (!body) {
@@ -36,6 +40,52 @@ void drawBody(void)
 	glmVertexNormals(body, 90.0);
     }
     glmDraw(body, GLM_SMOOTH | GLM_TEXTURE);
+}
+
+void drawLeftshouder(void)/////////////////////
+{
+    if (!leftshouder) {
+	leftshouder = glmReadOBJ("data/leftshouder.obj");
+	if (!leftshouder) exit(0);
+	glmUnitize(leftshouder);
+	glmFacetNormals(leftshouder);
+	glmVertexNormals(leftshouder, 90.0);
+    }
+    glmDraw(leftshouder, GLM_SMOOTH | GLM_TEXTURE);
+}
+void drawRightshouder(void)/////////////////////
+{
+    if (!rightshouder) {
+	rightshouder = glmReadOBJ("data/rightshouder.obj");
+	if (!rightshouder) exit(0);
+	glmUnitize(rightshouder);
+	glmFacetNormals(rightshouder);
+	glmVertexNormals(rightshouder, 90.0);
+    }
+    glmDraw(rightshouder, GLM_SMOOTH | GLM_TEXTURE);
+}
+
+void drawHead(void)
+{
+    if (!head) {
+	head = glmReadOBJ("data/head.obj");
+	if (!head) exit(0);
+	glmUnitize(head);
+	glmFacetNormals(head);
+	glmVertexNormals(head, 90.0);
+    }
+    glmDraw(head, GLM_SMOOTH | GLM_TEXTURE);
+}
+void drawRighthend(void)
+{
+    if (!righthend) {
+	righthend = glmReadOBJ("data/righthend.obj");
+	if (!righthend) exit(0);
+	glmUnitize(righthend);
+	glmFacetNormals(righthend);
+	glmVertexNormals(righthend, 90.0);
+    }
+    glmDraw(righthend, GLM_SMOOTH | GLM_TEXTURE);
 }
 void drawUpperA(void)
 {
@@ -158,6 +208,11 @@ void keyboard(unsigned char key, int x, int y){
     if(key=='1') angleID=1;
     if(key=='2') angleID=2;
     if(key=='3') angleID=3;
+    if(key=='4') angleID=4;
+    if(key=='5') angleID=5;
+    if(key=='6') angleID=6;
+    if(key=='7') angleID=7;
+    if(key=='8') angleID=8;
 }
 void display()
 {
@@ -165,26 +220,50 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
 
-    glPushMatrix();
+    /*glPushMatrix();
         glRotatef(angle[0], 0, 1, 0);
         drawBody();
         ///glutSolidSphere(0.1, 30, 30);///圓球
         glEnable(GL_TEXTURE_2D);
         glColor3f(1,1,1);
 
-        glPushMatrix();
-            glTranslatef(-0.1,0,0);///掛在肩上
+        glPushMatrix();///左邊的手臂
+            glTranslatef(-0.29,0.26,0);///掛在肩上
             glRotatef(angle[1], 0, 0, 1);
             glRotatef(angle[2], 1, 0, 0);
-            glTranslatef(0, -0.07, 0);
-            drawUpperA();///(3)上手臂放好
-            glPushMatrix(); ///加這行, 讓它轉動
-                glTranslatef(-0.02, -0.09, 0);///(3)再掛到上手臂的位置ˋ
-                glRotatef(angle[1], 1, 0, 0);///(2) z軸轉
-                glTranslatef(0, -0.21, 0);///(1)
-                drawLowerA();///(0)
-            glPopMatrix(); ///(0)
+            glTranslatef(0, -0.08, 0);///旋轉軸
+            drawLeftshouder();///(3)上手臂放好
         glPopMatrix();
+        glPushMatrix(); ///右邊的手臂
+            glTranslatef(0.29, 0.26, 0);
+            glRotatef(angle[3], 0, 0, 1);///(2) z軸轉
+            glRotatef(angle[4], 1, 0, 0);
+            glTranslatef(0, -0.08, 0);///(1)
+            drawRightshouder();///(0)
+        glPopMatrix(); ///(0)
+
+        glPushMatrix();///頭
+            glTranslatef(0,0.43,0);///掛在肩上
+            //glRotatef(angle[1], 0, 0, 1);
+            //glRotatef(angle[2], 1, 0, 0);
+            glRotatef(angle[5], 0, 0, 1);
+            glRotatef(angle[6], 1, 0, 0);
+            glTranslatef(0, 0.2, 0);///旋轉軸
+            drawHead();///(3)上手臂放好
+        glPopMatrix();*/
+        glPushMatrix();///頭
+            glTranslatef(0,0,0);///掛在肩上
+            ///glTranslatef(0.1,0.5,0);///掛在肩上
+            //glRotatef(angle[1], 0, 0, 1);
+            //glRotatef(angle[2], 1, 0, 0);
+            glRotatef(angle[7], 0, 0, 1);
+            //glRotatef(angle[6], 1, 0, 0);
+            glTranslatef(0, 0.05, 0);///旋轉軸
+            drawRighthend();///(3)上手臂放好
+        glPopMatrix();
+
+
+
 
     glPopMatrix();
     glutSwapBuffers();
@@ -211,7 +290,7 @@ int main(int argc, char*argv[])
     glutMotionFunc(motion);
     glutKeyboardFunc(keyboard);///week13-1新加的
 
-    myTexture("data/Diffuse.jpg");
+    //myTexture("data/Diffuse.jpg");
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
