@@ -30,6 +30,9 @@ GLMmodel * leftshouder=NULL;
 GLMmodel * rightshouder=NULL;
 GLMmodel * head=NULL;
 GLMmodel * righthend=NULL;
+GLMmodel * lefthend=NULL;
+GLMmodel * footright=NULL;
+GLMmodel * footleft=NULL;
 void drawBody(void)
 {
     if (!body) {
@@ -87,16 +90,39 @@ void drawRighthend(void)
     }
     glmDraw(righthend, GLM_SMOOTH | GLM_TEXTURE);
 }
-void drawUpperA(void)
+void drawLefthend(void)
 {
-    if (!upperA) {
-	upperA = glmReadOBJ("data/upperA.obj");
-	if (!upperA) exit(0);
-	glmUnitize(upperA);
-	glmFacetNormals(upperA);
-	glmVertexNormals(upperA, 90.0);
+    if (!lefthend) {
+	lefthend = glmReadOBJ("data/lefthend.obj");
+	if (!lefthend) exit(0);
+	glmUnitize(lefthend);
+	glmFacetNormals(lefthend);
+	glmVertexNormals(lefthend, 90.0);
     }
-    glmDraw(upperA, GLM_SMOOTH | GLM_TEXTURE);
+    glmDraw(lefthend, GLM_SMOOTH | GLM_TEXTURE);
+}
+
+void drawFootright(void)
+{
+    if (!footright) {
+	footright = glmReadOBJ("data/footright.obj");
+	if (!footright) exit(0);
+	glmUnitize(footright);
+	glmFacetNormals(footright);
+	glmVertexNormals(footright, 90.0);
+    }
+    glmDraw(footright, GLM_SMOOTH | GLM_TEXTURE);
+}
+void drawFootleft(void)
+{
+    if (!footleft) {
+	footleft = glmReadOBJ("data/footleft.obj");
+	if (!footleft) exit(0);
+	glmUnitize(footleft);
+	glmFacetNormals(footleft);
+	glmVertexNormals(footleft, 90.0);
+    }
+    glmDraw(footleft, GLM_SMOOTH | GLM_TEXTURE);
 }
 void drawLowerA(void)
 {
@@ -213,6 +239,8 @@ void keyboard(unsigned char key, int x, int y){
     if(key=='6') angleID=6;
     if(key=='7') angleID=7;
     if(key=='8') angleID=8;
+    if(key=='9') angleID=9;
+
 }
 void display()
 {
@@ -220,7 +248,7 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
 
-    /*glPushMatrix();
+    glPushMatrix();
         glRotatef(angle[0], 0, 1, 0);
         drawBody();
         ///glutSolidSphere(0.1, 30, 30);///圓球
@@ -233,35 +261,59 @@ void display()
             glRotatef(angle[2], 1, 0, 0);
             glTranslatef(0, -0.08, 0);///旋轉軸
             drawLeftshouder();///(3)上手臂放好
+
+            glPushMatrix();///左邊手
+                glTranslatef(0.43,-0.08,-0.065);///掛在肩上
+                glRotatef(angle[7], 1, 0, 0);
+                glTranslatef(0, -0.368, 0);///旋轉軸
+                drawRighthend();///(3)上手臂放好
+                glEnable(GL_TEXTURE_2D);
+            glPopMatrix();
+
+
         glPopMatrix();
+
+
         glPushMatrix(); ///右邊的手臂
             glTranslatef(0.29, 0.26, 0);
             glRotatef(angle[3], 0, 0, 1);///(2) z軸轉
             glRotatef(angle[4], 1, 0, 0);
             glTranslatef(0, -0.08, 0);///(1)
             drawRightshouder();///(0)
+
+            glPushMatrix();///右手
+                glTranslatef(-0.45,-0.07,0.065);///掛在肩上
+                glRotatef(angle[8], 1, 0, 0);
+                glTranslatef(0, -0.368, 0);///旋轉軸
+                drawLefthend();///(3)上手臂放好
+                glEnable(GL_TEXTURE_2D);
+            glPopMatrix();
         glPopMatrix(); ///(0)
 
         glPushMatrix();///頭
             glTranslatef(0,0.43,0);///掛在肩上
-            //glRotatef(angle[1], 0, 0, 1);
-            //glRotatef(angle[2], 1, 0, 0);
             glRotatef(angle[5], 0, 0, 1);
             glRotatef(angle[6], 1, 0, 0);
             glTranslatef(0, 0.2, 0);///旋轉軸
             drawHead();///(3)上手臂放好
-        glPopMatrix();*/
-        glPushMatrix();///頭
-            glTranslatef(0,0,0);///掛在肩上
-            ///glTranslatef(0.1,0.5,0);///掛在肩上
-            //glRotatef(angle[1], 0, 0, 1);
-            //glRotatef(angle[2], 1, 0, 0);
-            glRotatef(angle[7], 0, 0, 1);
-            //glRotatef(angle[6], 1, 0, 0);
-            glTranslatef(0, 0.05, 0);///旋轉軸
-            drawRighthend();///(3)上手臂放好
         glPopMatrix();
 
+        glPushMatrix();///右腳
+            glScalef(0.3, 0.27,0.3);
+            ///glTranslatef(0,0,0);
+            glTranslatef(-0.5,-1.6,-0.35);///掛在肩上
+            glRotatef(angle[9], 1, 0, 0);
+            glTranslatef(0, -0.7, 0);///旋轉軸
+            drawFootright();///(3)上手臂放好
+        glPopMatrix();
+        glPushMatrix();///右腳
+            glScalef(0.3, 0.27,0.3);
+            ///glTranslatef(0,0,0);
+            glTranslatef(0.5,-1.6,-0.35);///掛在肩上
+            glRotatef(angle[0], 1, 0, 0);
+            glTranslatef(0, -0.7, 0);///旋轉軸
+            drawFootright();///(3)上手臂放好
+        glPopMatrix();
 
 
 
